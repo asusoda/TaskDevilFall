@@ -41,7 +41,7 @@ public class Task {
     }
 
     //sun, mon, ..., fri, sat
-    private boolean[] unpackWeek(int fieldInt){
+    private static boolean[] unpackWeek(long fieldInt){
         boolean[] days = new boolean[7];
         for(int i = 6; i > 0; i--){
             if(fieldInt - Math.pow(2, i) >= 0){
@@ -54,21 +54,71 @@ public class Task {
 
     public void updateNextOccurrenceTime(){
         switch(mRecurrenceType){
+
             case ONLY_ONCE:
                 mOccursAt = null;
                 break;
+
             case PERIODIC:
                 mOccursAt += mRecurrenceValue;
                 break;
+
             case DAYS_OF_WEEK:
                 GregorianCalendar lastOccurrence = new GregorianCalendar();
-                lastOccurrence.setTime(new Date(mOccursAt));
+                lastOccurrence.setTime(new Date(mOccursAt * 1000));
                 int lastOccurrenceDay = lastOccurrence.get(Calendar.DAY_OF_WEEK);
 
-                //todo: finish this
+                //necessary to map between the enum values and our internal representation
+                switch(lastOccurrenceDay){
+                    case Calendar.SUNDAY:
+                        lastOccurrenceDay = 0;
+                        break;
+                    case Calendar.MONDAY:
+                        lastOccurrenceDay = 1;
+                        break;
+                    case Calendar.TUESDAY:
+                        lastOccurrenceDay = 2;
+                        break;
+                    case Calendar.WEDNESDAY:
+                        lastOccurrenceDay = 3;
+                        break;
+                    case Calendar.THURSDAY:
+                        lastOccurrenceDay = 4;
+                        break;
+                    case Calendar.FRIDAY:
+                        lastOccurrenceDay = 5;
+                        break;
+                    case Calendar.SATURDAY:
+                        lastOccurrenceDay = 6;
+                        break;
+                    default:
+                        break;
+                }
 
+                boolean finished = false;
+                boolean weekBitfield[] = Task.unpackWeek((mRecurrenceValue));
+                int dayCounter = lastOccurrenceDay;
+                GregorianCalendar nextOccurrence = (GregorianCalendar)lastOccurrence.clone();
+                nextOccurrence.add(Calendar.DAY_OF_MONTH, 1);
 
+                while(!finished){
+                    ++dayCounter;
+
+                    if(dayCounter == 7){
+                        dayCounter = 0;
+                    }
+
+                    if(weekBitfield[dayCounter]){
+                        finished = true;
+                    }
+                    else{
+                        nextOccurrence.add(Calendar.DAY_OF_MONTH, 1);
+                    }
+                }
+                //must handle case of no days selected - or is that part of data integrity?
+                mOccursAt = nextOccurrence.getTimeInMillis() / 1000;
                 break;
+
             default:
                 break;
         }
