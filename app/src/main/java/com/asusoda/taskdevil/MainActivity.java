@@ -1,6 +1,10 @@
 package com.asusoda.taskdevil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,10 +56,39 @@ public class MainActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch(item.getItemId()){
+            case R.id.action_add:
+                break;
+            case R.id.action_editor:
+                Intent editorIntent = new Intent(this, Editor.class);
+                startActivity(editorIntent);
+                break;
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, Settings.class);
+                startActivity(settingsIntent);
+                break;
+            case R.id.action_about:
+                AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
+
+                //title string needs in-code composition
+                String title = String.format(getString(R.string.action_about_title), getString(R.string.semantic_version));
+                aboutBuilder.setTitle(title);
+
+                aboutBuilder.setMessage(R.string.action_about_message);
+
+                aboutBuilder.setPositiveButton(R.string.action_about_positiveButton, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id){
+
+                        }
+                    });
+
+                AlertDialog aboutDialog = aboutBuilder.create();
+                aboutDialog.show();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }
