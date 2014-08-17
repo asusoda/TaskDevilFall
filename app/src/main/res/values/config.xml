@@ -6,21 +6,9 @@
     <string name="task_title_field">Title</string>
     <string name="task_description_field">Description</string>
     <string name="task_recurrence_type_field">RecurrenceType</string>
-    <string name="task_recurrence_vale_field">RecurrenceValue</string>
-    <string name="task_reminder_time_field">ReminderTime</string>
+    <string name="task_recurrence_value_field">RecurrenceValue</string>
+    <string name="task_reminder_advance_time_field">ReminderAdvanceTime</string>
     <string name="task_occurs_at_field">OccursAt</string>
     <string name="task_time">TaskTime</string>
-    <string name="table_create">
-        CREATE TABLE IF NOT EXISTS
-            Tasks (
-                ID integer PRIMARY KEY autoincrement,
-                Title text,
-                Description text,
-                RecurrenceType integer,
-                RecurrenceValue integer,
-                ReminderTime integer,
-                OccursAt integer,
-            );
-    </string>
 
 </resources>

@@ -4,14 +4,39 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.asusoda.taskdevil.adapters.TaskListAdapter;
+import com.asusoda.taskdevil.data_access_layer.DataAccess;
+import com.asusoda.taskdevil.data_access_layer.DataAccess.TaskRetrieveOptions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
+
+    private ArrayList< Task > testingTasks;
+
+    private TaskListAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ListView taskList = (ListView)findViewById(R.id.TaskList);
+
+        testingTasks = new ArrayList< Task >();
+
+        DataAccess.addTask(this, new Task("I am a task", "Some say they click my checkbox"));
+        DataAccess.addTask(this, new Task("I am another task", "Some say I killed Steve"));
+        DataAccess.addTask(this, new Task("I am trapped", "Do you think the checkbox will save me?"));
+
+        TaskRetrieveOptions options = new TaskRetrieveOptions();
+        options.all = new Boolean(true);
+
+        testingTasks = DataAccess.getTasks(this, options);
+
+        taskAdapter = new TaskListAdapter(this, testingTasks);
+        taskList.setAdapter(taskAdapter);
     }
 
 

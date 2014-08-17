@@ -1,6 +1,7 @@
 package com.asusoda.taskdevil;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -9,39 +10,42 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseManager extends SQLiteOpenHelper {
     private Context mContext;
+    public static final int DATABASE_VERSION = -1999;
 
-
-    DatabaseManager(Context pContext) {
+    public DatabaseManager(Context pContext) {
         super(pContext, pContext.getString(R.string.database_name), null, 1);
 
         mContext = pContext;
     }
 
-    public void populateDatabase() {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        db.execSQL(mContext.getString(R.string.table_create));
-    }
-
-    public void insertTask(String pTitle, String pDescription, int pRecType, int pRecValue, int pReminderTime, int pOccursAt) {
+    public void insertTask(Task task) {
         String insertProcedure = mContext.getString(R.string.sql_insert_task);
 
-        insertProcedure.replace("{0}", pTitle);
-        insertProcedure.replace("{1}", pDescription);
-        insertProcedure.replace("{2}", "" + pRecType);
-        insertProcedure.replace("{3}", "" + pRecValue);
-        insertProcedure.replace("{4}", "" + pReminderTime);
-        insertProcedure.replace("{5}", "" + pOccursAt);
+        insertProcedure = insertProcedure.replace("{0}", task.getTitle());
+        insertProcedure = insertProcedure.replace("{1}", task.getDescription());
+        insertProcedure = insertProcedure.replace("{2}", "" + task.getRecurrenceType().ordinal());
+        insertProcedure = insertProcedure.replace("{3}", "" + task.getRecurrenceValue());
+        insertProcedure = insertProcedure.replace("{4}", "" + task.getReminderAdvanceTime());
+        insertProcedure = insertProcedure.replace("{5}", "" + task.getOccursAt());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(insertProcedure);
     }
 
-
+    public Cursor retrieveAllTasks() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllTasksProcedure = mContext.getString(R.string.sql_get_all_tasks);
+        Cursor rows = db.rawQuery(getAllTasksProcedure, null);
+        return rows;
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // these are the procedures for creating the database from scratch
+        String createProcedure = mContext.getString(R.string.sql_create_database);
 
+        // here we execute the sql
+        db.execSQL(createProcedure);
     }
 
     @Override

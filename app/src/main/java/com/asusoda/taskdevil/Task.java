@@ -8,13 +8,16 @@ import java.util.GregorianCalendar;
  * Created by Tyler on 8/9/2014.
  */
 
-enum RecurrenceTypes {
-            ONLY_ONCE,
-            PERIODIC,
-            DAYS_OF_WEEK
-        }
 
 public class Task {
+    // Java declares that if this enum is not within the bounds of this class, other files don't like it.
+    // Don't move me.
+    public enum RecurrenceTypes {
+        ONLY_ONCE,
+        PERIODIC,
+        DAYS_OF_WEEK
+    }
+
     private int mId;
     private String mTitle;
     private String mDescription;
@@ -38,6 +41,15 @@ public class Task {
         mRecurrenceValue = recurrenceValue;
         mReminderAdvanceTime = reminderAdvanceTime;
         mOccursAt = occursAt;
+    }
+
+    public Task(String title, String description) {
+        mTitle = title;
+        mDescription = description;
+        mRecurrenceType = RecurrenceTypes.ONLY_ONCE;
+        mRecurrenceValue = 0;
+        mReminderAdvanceTime = 0;
+        mOccursAt = 0L;
     }
 
     //sun, mon, ..., fri, sat
@@ -130,47 +142,47 @@ public class Task {
         return mId;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getmDescription() {
+    public String getDescription() {
         return mDescription;
     }
 
-    public RecurrenceTypes getmRecurrenceType() {
+    public RecurrenceTypes getRecurrenceType() {
         return mRecurrenceType;
     }
 
-    public long getmRecurrenceValue() {
+    public long getRecurrenceValue() {
         return mRecurrenceValue;
     }
 
-    public int getmReminderAdvanceTime() {
+    public int getReminderAdvanceTime() {
         return mReminderAdvanceTime;
     }
 
-    public long getmOccursAt() {
+    public long getOccursAt() {
         return mOccursAt;
     }
 
-    public void setmTitle(String mTitle) {
+    public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 
-    public void setmDescription(String mDescription) {
+    public void setDescription(String mDescription) {
         this.mDescription = mDescription;
     }
 
-    public void setmRecurrenceType(RecurrenceTypes mRecurrenceType) {
+    public void setRecurrenceType(RecurrenceTypes mRecurrenceType) {
         this.mRecurrenceType = mRecurrenceType;
     }
 
-    public void setmRecurrenceValue(int mRecurrenceValue) {
+    public void setRecurrenceValue(int mRecurrenceValue) {
         this.mRecurrenceValue = mRecurrenceValue;
     }
 
-    public void setmReminderAdvanceTime(int mReminderAdvanceTime) {
+    public void setReminderAdvanceTime(int mReminderAdvanceTime) {
         this.mReminderAdvanceTime = mReminderAdvanceTime;
     }
 }
