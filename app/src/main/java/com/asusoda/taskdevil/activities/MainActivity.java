@@ -1,8 +1,7 @@
-package com.asusoda.taskdevil;
+package com.asusoda.taskdevil.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,15 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.asusoda.taskdevil.R;
+import com.asusoda.taskdevil.Settings;
+import com.asusoda.taskdevil.Task;
 import com.asusoda.taskdevil.adapters.TaskListAdapter;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
 import com.asusoda.taskdevil.data_access_layer.DataAccess.TaskRetrieveOptions;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
 
-    private ArrayList< Task > testingTasks;
+    private ArrayList<Task> testingTasks;
 
     private TaskListAdapter taskAdapter;
 
@@ -29,10 +32,6 @@ public class MainActivity extends Activity {
         ListView taskList = (ListView)findViewById(R.id.TaskList);
 
         testingTasks = new ArrayList< Task >();
-
-        DataAccess.addTask(this, new Task("I am a task", "Some say they click my checkbox"));
-        DataAccess.addTask(this, new Task("I am another task", "Some say I killed Steve"));
-        DataAccess.addTask(this, new Task("I am trapped", "Do you think the checkbox will save me?"));
 
         TaskRetrieveOptions options = new TaskRetrieveOptions();
         options.all = new Boolean(true);
@@ -52,6 +51,23 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        ActivityCodes activityCode = ActivityCodes.values()[requestCode];
+
+        switch (activityCode) {
+            case ADD_TASK:
+                //on successful add, refresh the data source
+                if (resultCode == RESULT_OK) {
+                    int a = 1;
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -59,9 +75,12 @@ public class MainActivity extends Activity {
 
         switch(item.getItemId()){
             case R.id.action_add:
+                Intent addIntent = new Intent(this, AddEditTaskActivity.class);
+                addIntent.putExtra(Intent.ACTION_INSERT, true);
+                startActivityForResult(addIntent, ActivityCodes.ADD_TASK.val);
                 break;
             case R.id.action_editor:
-                Intent editorIntent = new Intent(this, Editor.class);
+                Intent editorIntent = new Intent(this, EditorActivity.class);
                 startActivity(editorIntent);
                 break;
             case R.id.action_settings:

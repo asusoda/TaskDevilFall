@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_field_hint">Title</string>
+    <string name="description_field_hint">Description</string>
+
+    <string name="confirm_button_text">Add</string>
+
+</resources>

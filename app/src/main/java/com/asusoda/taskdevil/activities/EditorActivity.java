@@ -1,4 +1,4 @@
-package com.asusoda.taskdevil;
+package com.asusoda.taskdevil.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.asusoda.taskdevil.R;
 
-public class Editor extends Activity {
+public class EditorActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
