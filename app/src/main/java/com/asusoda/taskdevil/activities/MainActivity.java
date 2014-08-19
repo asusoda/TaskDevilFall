@@ -25,14 +25,9 @@ public class MainActivity extends Activity {
 
     private TaskListAdapter taskAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ListView taskList = (ListView)findViewById(R.id.TaskList);
+    private ListView taskList;
 
-        testingTasks = new ArrayList< Task >();
-
+    public void inflateTaskListAll() {
         TaskRetrieveOptions options = new TaskRetrieveOptions();
         options.all = new Boolean(true);
 
@@ -40,6 +35,17 @@ public class MainActivity extends Activity {
 
         taskAdapter = new TaskListAdapter(this, testingTasks);
         taskList.setAdapter(taskAdapter);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        taskList = (ListView)findViewById(R.id.TaskList);
+
+        testingTasks = new ArrayList< Task >();
+
+        inflateTaskListAll();
     }
 
 
@@ -59,6 +65,11 @@ public class MainActivity extends Activity {
                 //on successful add, refresh the data source
                 if (resultCode == RESULT_OK) {
                     int a = 1;
+
+                    inflateTaskListAll();
+
+                    taskList.postInvalidate();
+
                 }
                 break;
 
