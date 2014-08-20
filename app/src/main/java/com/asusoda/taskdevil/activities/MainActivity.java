@@ -90,8 +90,11 @@ public class MainActivity extends Activity {
                 startActivityForResult(addIntent, ActivityCodes.ADD_TASK.val);
                 break;
             case R.id.action_editor:
+                /* Temporarily disable the editor because it's not done yet
                 Intent editorIntent = new Intent(this, EditorActivity.class);
-                startActivity(editorIntent);
+                startActivity(editorIntent); */
+
+                Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_settings:
                 /* Temporarily disabling settings while we get a handle on how it actually works
