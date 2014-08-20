@@ -10,14 +10,13 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.asusoda.taskdevil.R;
-import com.asusoda.taskdevil.Settings;
-import com.asusoda.taskdevil.Task;
+import com.asusoda.taskdevil.activities.SettingsActivity;
+import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.adapters.TaskListAdapter;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
 import com.asusoda.taskdevil.data_access_layer.DataAccess.TaskRetrieveOptions;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class MainActivity extends Activity {
 
@@ -95,7 +94,7 @@ public class MainActivity extends Activity {
                 startActivity(editorIntent);
                 break;
             case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, Settings.class);
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 break;
             case R.id.action_about:

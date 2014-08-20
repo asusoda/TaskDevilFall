@@ -3,10 +3,9 @@ package com.asusoda.taskdevil.data_access_layer;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.asusoda.taskdevil.DatabaseManager;
 import com.asusoda.taskdevil.R;
-import com.asusoda.taskdevil.Task;
-import com.asusoda.taskdevil.Task.RecurrenceTypes;
+import com.asusoda.taskdevil.models.Task;
+import com.asusoda.taskdevil.models.Task.RecurrenceTypes;
 
 import java.util.ArrayList;
 

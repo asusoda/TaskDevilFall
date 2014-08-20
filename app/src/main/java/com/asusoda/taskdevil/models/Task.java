@@ -1,4 +1,4 @@
-package com.asusoda.taskdevil;
+package com.asusoda.taskdevil.models;
 
 import java.util.Calendar;
 import java.util.Date;
