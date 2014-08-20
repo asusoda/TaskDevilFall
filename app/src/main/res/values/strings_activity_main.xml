@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    This file contains strings that pertain to MainActivity. Do not put unrelated strings here.
+    All strings here take the form of main_*
+-->
+
+<resources>
+    <string name="main_about_title">TaskDevil %s</string>
+    <string name="main_about_message">TaskDevil is a SoDA@ASU project.\nVisit our site at http://sodaasu.com/.</string>
+    <string name="main_about_positiveButton">Cool</string>
+
+    <string name="main_action_add">Add</string>
+    <string name="main_action_editor">Editor</string>
+    <string name="main_action_settings">Settings</string>
+    <string name="main_action_about">About</string>
+
+</resources>

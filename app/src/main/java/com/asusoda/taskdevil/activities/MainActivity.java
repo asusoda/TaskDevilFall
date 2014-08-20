@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.asusoda.taskdevil.R;
-import com.asusoda.taskdevil.activities.SettingsActivity;
 import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.adapters.TaskListAdapter;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
@@ -94,19 +94,21 @@ public class MainActivity extends Activity {
                 startActivity(editorIntent);
                 break;
             case R.id.action_settings:
+                /* Temporarily disabling settings while we get a handle on how it actually works
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
+                startActivity(settingsIntent);*/
+                Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
-                AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
+               AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
 
                 //title string needs in-code composition
-                String title = String.format(getString(R.string.action_about_title), getString(R.string.semantic_version));
+                String title = String.format(getString(R.string.main_about_title), getString(R.string.semantic_version));
                 aboutBuilder.setTitle(title);
 
-                aboutBuilder.setMessage(R.string.action_about_message);
+                aboutBuilder.setMessage(R.string.main_about_message);
 
-                aboutBuilder.setPositiveButton(R.string.action_about_positiveButton, new DialogInterface.OnClickListener() {
+                aboutBuilder.setPositiveButton(R.string.main_about_positiveButton, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id){
 
                         }
