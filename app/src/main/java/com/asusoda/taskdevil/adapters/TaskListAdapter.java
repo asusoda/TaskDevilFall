@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.asusoda.taskdevil.R;
-import com.asusoda.taskdevil.Task;
+import com.asusoda.taskdevil.models.Task;
 
 import java.util.ArrayList;
 

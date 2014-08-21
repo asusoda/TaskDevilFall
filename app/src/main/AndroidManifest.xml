@@ -21,12 +21,12 @@
             android:label="@string/title_activity_editor" >
         </activity>
         <activity
-            android:name=".Settings"
-            android:label="@string/title_activity_settings" >
-        </activity>
-        <activity
             android:name=".activities.AddEditTaskActivity"
             android:label="@string/title_activity_add_edit_task" >
+        </activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 

@@ -1,9 +1,12 @@
-package com.asusoda.taskdevil;
+package com.asusoda.taskdevil.data_access_layer;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.asusoda.taskdevil.R;
+import com.asusoda.taskdevil.models.Task;
 
 /**
  * Created by Tyler on 8/9/2014.

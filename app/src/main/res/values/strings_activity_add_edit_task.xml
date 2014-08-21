@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    This file contains strings that pertain to AddEditTaskActivity. Do not put unrelated strings here.
+    All strings here take the form of addEdit_*
+-->
+
 <resources>
+    <string name="addEdit_add_action_bar_title">Add a Task</string>
 
-    <string name="title_field_hint">Title</string>
-    <string name="description_field_hint">Description</string>
+    <string name="addEdit_title_field_hint">Title</string>
+    <string name="addEdit_description_field_hint">Description</string>
 
-    <string name="confirm_button_text">Add</string>
+    <string name="addEdit_confirm_button_text">Add</string>
+
+    <string name="addEdit_confirm_add_toast_text">Task added!</string>
 
 </resources>

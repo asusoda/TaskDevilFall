@@ -7,9 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.asusoda.taskdevil.R;
-import com.asusoda.taskdevil.Task;
+import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
 
 public class AddEditTaskActivity extends Activity {
@@ -18,6 +19,8 @@ public class AddEditTaskActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_task);
+
+        getActionBar().setTitle(R.string.addEdit_add_action_bar_title);
     }
 
     public void addNewTask(View view){
@@ -25,6 +28,8 @@ public class AddEditTaskActivity extends Activity {
         String description = ((EditText) findViewById(R.id.add_description_field)).getText().toString();
         Task taskToAdd = new Task(title, description);
         DataAccess.addTask(this, new Task(title, description));
+
+        Toast.makeText(getApplicationContext(), R.string.addEdit_confirm_add_toast_text, Toast.LENGTH_SHORT).show();
 
         Intent i = new Intent();
         this.setResult(RESULT_OK, i);
