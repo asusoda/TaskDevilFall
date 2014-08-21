@@ -28,11 +28,6 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-
-        <service
-            android:name=".service.NotifierIntentService"
-            android:exported="false" >
-        </service>
     </application>
 
 </manifest>
