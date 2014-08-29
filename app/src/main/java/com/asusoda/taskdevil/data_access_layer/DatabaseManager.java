@@ -21,12 +21,20 @@ public class DatabaseManager extends SQLiteOpenHelper {
         mContext = pContext;
     }
 
+    private String addBackslashes(String val) {
+        int test = 1;
+        val = val.replace("'", "\'\'");
+        return val;
+    }
+
     public void insertTask(Task task) {
         String insertProcedure = mContext.getString(R.string.sql_insert_task);
 
-        insertProcedure = insertProcedure.replace("{0}", task.getTitle());
-        insertProcedure = insertProcedure.replace("{1}", task.getDescription());
-        insertProcedure = insertProcedure.replace("{2}", "" + task.getRecurrenceType().ordinal());
+        insertProcedure = insertProcedure.replace("{0}",  addBackslashes( task.getTitle() ) );
+
+        insertProcedure = insertProcedure.replace("{1}",  addBackslashes( task.getDescription() ) );
+
+        insertProcedure = insertProcedure.replace("{2}", "" + task.getRecurrenceType().ordinal() );
         insertProcedure = insertProcedure.replace("{3}", "" + task.getRecurrenceValue());
         insertProcedure = insertProcedure.replace("{4}", "" + task.getReminderAdvanceTime());
         insertProcedure = insertProcedure.replace("{5}", "" + task.getOccursAt());
