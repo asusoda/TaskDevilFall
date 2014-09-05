@@ -18,6 +18,15 @@ public class Task {
         DAYS_OF_WEEK
     }
 
+    // Bit masks for the days of the week
+    private static int bm_sun = 64; // 0b1000000
+    private static int bm_mon = 32; // 0b0100000
+    private static int bm_tue = 16; // 0b0010000
+    private static int bm_wed = 8;  // 0b0001000
+    private static int bm_thu = 4;  // 0b0000100
+    private static int bm_fri = 2;  // 0b0000010
+    private static int bm_sat = 1;  // 0b0000001
+
     private int mId;
     private String mTitle;
     private String mDescription;
@@ -52,15 +61,19 @@ public class Task {
         mOccursAt = 0L;
     }
 
-    //sun, mon, ..., fri, sat
+    // sun, mon, ..., fri, sat
+    // Revamped to use the bitmasks defined above to check the status of individual weekdays.
+    // The code is currently pretty verbose, though. Can revise later to iterate through a for
+    // loop of masks instead.
     private static boolean[] unpackWeek(long fieldInt){
         boolean[] days = new boolean[7];
-        for(int i = 6; i > 0; i--){
-            if(fieldInt - Math.pow(2, i) >= 0){
-                days[6 - i] = true;
-                fieldInt -= Math.pow(2,i);
-            }
-        }
+        days[0] = (fieldInt & bm_sun) == bm_sun;
+        days[1] = (fieldInt & bm_mon) == bm_mon;
+        days[2] = (fieldInt & bm_tue) == bm_tue;
+        days[3] = (fieldInt & bm_wed) == bm_wed;
+        days[4] = (fieldInt & bm_thu) == bm_thu;
+        days[5] = (fieldInt & bm_fri) == bm_fri;
+        days[6] = (fieldInt & bm_sat) == bm_sat;
         return days;
     }
 
