@@ -7,20 +7,23 @@
         android:orderInCategory="99"
         android:showAsAction="ifRoom" />
 
-
-
-    <item android:id="@+id/action_editor"
-        android:title="@string/main_action_editor"
+    <item android:id="@+id/action_calendar"
+        android:title="@string/main_action_calendar"
         android:orderInCategory="100"
+        android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_mass_delete"
+        android:title="@string/main_action_mass_delete"
+        android:orderInCategory="101"
         android:showAsAction="never" />
 
     <item android:id="@+id/action_settings"
         android:title="@string/main_action_settings"
-        android:orderInCategory="101"
+        android:orderInCategory="102"
         android:showAsAction="never" />
 
     <item android:id="@+id/action_about"
         android:title="@string/main_action_about"
-        android:orderInCategory="102"
+        android:orderInCategory="103"
         android:showAsAction="never" />
 </menu>

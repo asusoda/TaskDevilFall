@@ -89,11 +89,16 @@ public class MainActivity extends Activity {
                 addIntent.putExtra(Intent.ACTION_INSERT, true);
                 startActivityForResult(addIntent, ActivityCodes.ADD_TASK.val);
                 break;
-            case R.id.action_editor:
-                /* Temporarily disable the editor because it's not done yet
-                Intent editorIntent = new Intent(this, EditorActivity.class);
-                startActivity(editorIntent); */
-
+            case R.id.action_calendar:
+                /* Temporarily disable because it's not done yet
+                Intent calendarIntent = new Intent(this, CalendarActivity.class);
+                startActivity(calendarIntent); */
+                Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_mass_delete:
+                /* Temporarily disable because it's not done yet
+                Intent massDeleteIntent = new Intent(this, MassDeleteActivity.class);
+                startActivity(massDeleteIntent); */
                 Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_settings:
