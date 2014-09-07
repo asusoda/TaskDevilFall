@@ -4,14 +4,12 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.asusoda.taskdevil.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.asusoda.taskdevil.activities.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
     <header
-        android:fragment="com.asusoda.taskdevil.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
-    <header
-        android:fragment="com.asusoda.taskdevil.SettingsActivity$DataSyncPreferenceFragment"
-        android:title="@string/pref_header_data_sync" />
+        android:fragment="com.asusoda.taskdevil.activities.SettingsActivity$AlertPreferenceFragment"
+        android:title="@string/pref_header_alerts" />
+
 
     <!-- These settings headers are only used on tablets. -->
 
@@ -19,10 +17,8 @@
         android:fragment="com.asusoda.taskdevil.activities.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
     <header
-        android:fragment="com.asusoda.taskdevil.activities.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
-    <header
-        android:fragment="com.asusoda.taskdevil.activities.SettingsActivity$DataSyncPreferenceFragment"
-        android:title="@string/pref_header_data_sync" />
+        android:fragment="com.asusoda.taskdevil.activities.SettingsActivity$AlertPreferenceFragment"
+        android:title="@string/pref_header_alerts" />
+
 
 </preference-headers>

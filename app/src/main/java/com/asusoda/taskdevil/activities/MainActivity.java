@@ -97,10 +97,8 @@ public class MainActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_settings:
-                /* Temporarily disabling settings while we get a handle on how it actually works
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);*/
-                Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+                startActivity(settingsIntent);
                 break;
             case R.id.action_about:
                AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
