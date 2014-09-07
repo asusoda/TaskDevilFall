@@ -15,3 +15,5 @@ Tyler Wanek @implausible
 
 ##Support/Contact Us
 Contact us directly as TaskDevilAdmin@asu.edu, or lease us a note in the Issues tracker.
+
+Visit SoDA at http://sodaasu.com/
