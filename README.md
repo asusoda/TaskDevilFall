@@ -12,6 +12,7 @@ Christopher Recher @chrisrecher
 Tyler Wanek @implausible
 
 ###Developers
+Steve King, Jr. @stevex86
 
 ##Support/Contact Us
 Contact us directly as TaskDevilAdmin@asu.edu, or lease us a note in the Issues tracker.
