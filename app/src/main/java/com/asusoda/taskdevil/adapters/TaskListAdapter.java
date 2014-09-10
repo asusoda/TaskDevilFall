@@ -35,7 +35,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         // rowView is the View object which uses our task_item resource file as its layout for displaying information to the users
         View rowView = inflater.inflate(R.layout.task_item, parent, false);
-
+        rowView.setLongClickable(true);
         // These views will be data fields for the row in the list
         TextView firstLine = (TextView) rowView.findViewById(R.id.firstline);
         TextView secondLine = (TextView) rowView.findViewById(R.id.secondline);
