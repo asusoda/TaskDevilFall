@@ -57,6 +57,11 @@ public class MainActivity extends Activity {
 
 
 
+        //giving all tasks the ability to open a context menu
+        //on a long press
+        registerForContextMenu(taskList);
+
+
         testingTasks = new ArrayList< Task >();
 
         inflateTaskListAll();
