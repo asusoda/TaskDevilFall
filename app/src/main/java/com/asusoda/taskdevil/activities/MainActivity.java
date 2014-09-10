@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,6 +43,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         taskList = (ListView)findViewById(R.id.TaskList);
+
+        //giving all tasks the ability to open a context menu
+        //on a long press
+        registerForContextMenu(taskList);
+
 
         testingTasks = new ArrayList< Task >();
 
@@ -128,4 +135,13 @@ public class MainActivity extends Activity {
         }
         return true;
     }
+
+
+    //Show context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.long_press_context, menu);
+    }
+
 }
