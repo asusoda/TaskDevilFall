@@ -26,14 +26,23 @@ public class AddEditTaskActivity extends Activity {
     public void addNewTask(View view){
         String title = ((EditText) findViewById(R.id.add_title_field)).getText().toString();
         String description = ((EditText) findViewById(R.id.add_description_field)).getText().toString();
-        Task taskToAdd = new Task(title, description);
-        DataAccess.addTask(this, new Task(title, description));
-
-        Toast.makeText(getApplicationContext(), R.string.addEdit_confirm_add_toast_text, Toast.LENGTH_SHORT).show();
-
-        Intent i = new Intent();
-        this.setResult(RESULT_OK, i);
-        this.finish();
+        if (title.equals("") && description.equals("")) {
+            Toast.makeText(getApplicationContext(), "You left both fields blank. (Title/Description)", Toast.LENGTH_SHORT).show();
+        }
+        else if(title.equals("")){
+            Toast.makeText(getApplicationContext(), "You left a field blank. (Title)", Toast.LENGTH_SHORT).show();
+        }
+        else if(description.equals("")){
+            Toast.makeText(getApplicationContext(), "You left a field blank. (Description)", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Task taskToAdd = new Task(title, description);
+            DataAccess.addTask(this, new Task(title, description));
+            Toast.makeText(getApplicationContext(), R.string.addEdit_confirm_add_toast_text, Toast.LENGTH_SHORT).show();
+            Intent i = new Intent();
+            this.setResult(RESULT_OK, i);
+            this.finish();
+        }
     }
 
     @Override
