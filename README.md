@@ -9,13 +9,12 @@ This project is in pre-alpha development.
 ##Contributors
 
 ###Project Leads
-Christopher Recher @chrisrecher
-
-Tyler Wanek @implausible
+* Christopher Recher @chrisrecher
+* Tyler Wanek @implausible
 
 ###Developers
-Steve King, Jr. @stevex86
-Nathan Fegard @nfegard
+* Steve King, Jr. @stevex86
+* Nathan Fegard @nfegard
 
 ##Support/Contact Us
 Contact us directly as TaskDevilAdmin@asu.edu, or lease us a note in the Issues tracker.
