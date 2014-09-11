@@ -15,6 +15,7 @@ This project is in pre-alpha development.
 ###Developers
 * Steve King, Jr. @stevex86
 * Nathan Fegard @nfegard
+* John Robertson @jjrob13
 
 ##Support/Contact Us
 Contact us directly as TaskDevilAdmin@asu.edu, or lease us a note in the Issues tracker.
