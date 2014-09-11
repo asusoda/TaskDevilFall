@@ -16,9 +16,10 @@ public class DataAccess {
 
     public static class TaskRetrieveOptions {
         public Boolean all;
+        public Boolean nextHour;
+        public Boolean thisHour;
         public Integer startTime;
         public Integer endTime;
-        public Integer occursAt;
         public Integer id;
     }
 
@@ -47,7 +48,9 @@ public class DataAccess {
                 rowRecurrenceType = rows.getColumnIndex(context.getString(R.string.task_recurrence_type_field)),
                 rowRecurrenceValue = rows.getColumnIndex(context.getString(R.string.task_recurrence_value_field)),
                 rowReminderAdvanceTime = rows.getColumnIndex(context.getString(R.string.task_reminder_advance_time_field)),
-                rowOccursAt = rows.getColumnIndex(context.getString(R.string.task_occurs_at_field));
+                rowOccursAt = rows.getColumnIndex(context.getString(R.string.task_occurs_at_field)),
+                rowNotificationAt = rows.getColumnIndex(context.getString(R.string.task_notification_at_field));
+
 
             // put the cursor at the first row
             rows.moveToFirst();
@@ -59,7 +62,8 @@ public class DataAccess {
                         RecurrenceTypes.values()[rows.getInt(rowRecurrenceType)],
                         rows.getInt(rowRecurrenceValue),
                         rows.getInt(rowReminderAdvanceTime),
-                        rows.getInt(rowOccursAt)
+                        rows.getLong(rowOccursAt),
+                        rows.getLong(rowNotificationAt)
                 );
                 // add the task to the list
                 out.add(task);
@@ -78,6 +82,9 @@ public class DataAccess {
             DatabaseManager dbManager = new DatabaseManager(context);
             Cursor rows = dbManager.retrieveAllTasks();
             out = cursorToTaskArrayList(context, rows);
+        } else if (options.nextHour != null && options.nextHour.booleanValue() == true) {
+            // so basically this is the hour after the current hour, so if you're at 12:50, your "this" hour is 12 and your next hour is 13:00.
+
         }
 
         return out;

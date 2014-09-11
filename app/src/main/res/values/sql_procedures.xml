@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="sql_get_all_tasks">SELECT * FROM Tasks</string>
-    <string name="sql_insert_task">INSERT INTO Tasks (Title, Description, RecurrenceType, RecurrenceValue, ReminderAdvanceTime, OccursAt) values (\'{0}\', \'{1}\', \'{2}\', \'{3}\', \'{4}\', \'{5}\');</string>
+    <string name="sql_insert_task">INSERT INTO Tasks (Title, Description, RecurrenceType, RecurrenceValue, ReminderAdvanceTime, OccursAt, NotificationAt) values (\'{0}\', \'{1}\', \'{2}\', \'{3}\', \'{4}\', \'{5}\', \'{6}\');</string>
         <string name="sql_create_database">
         CREATE TABLE IF NOT EXISTS
             Tasks (
@@ -11,7 +11,8 @@
                 RecurrenceType integer,
                 RecurrenceValue integer,
                 ReminderAdvanceTime integer,
-                OccursAt integer
+                OccursAt integer,
+                NotificationAt integer
             );
     </string>
 </resources>

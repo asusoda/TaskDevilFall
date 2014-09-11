@@ -38,6 +38,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         insertProcedure = insertProcedure.replace("{3}", "" + task.getRecurrenceValue());
         insertProcedure = insertProcedure.replace("{4}", "" + task.getReminderAdvanceTime());
         insertProcedure = insertProcedure.replace("{5}", "" + task.getOccursAt());
+        insertProcedure = insertProcedure.replace("{6}", "" + task.getNotificationAt());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(insertProcedure);

@@ -42,7 +42,9 @@ public class Task {
     //UNIX time value for the next occurrence of this event
     private Long mOccursAt;
 
-    public Task(int id, String title, String description, RecurrenceTypes recurrenceType, long recurrenceValue, int reminderAdvanceTime, long occursAt){
+    private Long mNotificationAt;
+
+    public Task(int id, String title, String description, RecurrenceTypes recurrenceType, long recurrenceValue, int reminderAdvanceTime, long occursAt, long notificationAt){
         mId = id;
         mTitle = title;
         mDescription = description;
@@ -50,6 +52,7 @@ public class Task {
         mRecurrenceValue = recurrenceValue;
         mReminderAdvanceTime = reminderAdvanceTime;
         mOccursAt = occursAt;
+        mNotificationAt = notificationAt;
     }
 
     public Task(String title, String description) {
@@ -59,6 +62,7 @@ public class Task {
         mRecurrenceValue = 0;
         mReminderAdvanceTime = 0;
         mOccursAt = 0L;
+        mNotificationAt = 0L;
     }
 
     // sun, mon, ..., fri, sat
@@ -178,6 +182,8 @@ public class Task {
     public long getOccursAt() {
         return mOccursAt;
     }
+
+    public long getNotificationAt() { return mNotificationAt; }
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;

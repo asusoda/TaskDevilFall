@@ -9,6 +9,7 @@
     <string name="task_recurrence_value_field">RecurrenceValue</string>
     <string name="task_reminder_advance_time_field">ReminderAdvanceTime</string>
     <string name="task_occurs_at_field">OccursAt</string>
+    <string name="task_notification_at_field">NotificationAt</string>
     <string name="task_time">TaskTime</string>
 
 </resources>
