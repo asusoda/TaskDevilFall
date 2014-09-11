@@ -30,3 +30,4 @@ proguard/
 
 #Android Studio minutia
 .idea/
+.idea/workspace.xml
