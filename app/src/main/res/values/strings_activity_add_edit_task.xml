@@ -10,6 +10,9 @@
 
     <string name="addEdit_title_field_hint">Title</string>
     <string name="addEdit_description_field_hint">Description</string>
+    <string name="addEdit_time_field_hint">Time</string>
+    <string name="addEdit_date_field_hint">Date</string>
+    <string name="addEdit_recurrence_field_hint">Recurs</string>
 
     <string name="addEdit_confirm_button_text">Add</string>
 

@@ -45,6 +45,21 @@ public class AddEditTaskActivity extends Activity {
         }
     }
 
+    // TODO: Implement
+    public void selectTime(View view) {
+        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+    }
+
+    // TODO: Implement
+    public void selectDate(View view) {
+        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+    }
+
+    // TODO: Implement
+    public void selectRecurrence(View view) {
+        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

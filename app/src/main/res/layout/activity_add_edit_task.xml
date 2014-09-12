@@ -32,7 +32,32 @@
             android:ems="10"
             android:id="@+id/add_description_field"
             android:layout_gravity="center_horizontal"
-            android:hint="@string/addEdit_description_field_hint"/>
+            android:hint="@string/addEdit_description_field_hint" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_time_field"
+            android:focusable="false"
+            android:hint="@string/addEdit_time_field_hint"
+            android:onClick="selectTime" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_date_field"
+            android:layout_gravity="center_horizontal"
+            android:focusable="false"
+            android:hint="@string/addEdit_date_field_hint"
+            android:onClick="selectDate" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_recurrence_field"
+            android:focusable="false"
+            android:hint="@string/addEdit_recurrence_field_hint"
+            android:onClick="selectRecurrence" />
 
     </LinearLayout>
 
