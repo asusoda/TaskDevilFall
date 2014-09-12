@@ -39,18 +39,20 @@ public class AddEditTaskActivity extends Activity {
     public void addNewTask(View view){
         String title = ((EditText) findViewById(R.id.add_title_field)).getText().toString();
         String description = ((EditText) findViewById(R.id.add_description_field)).getText().toString();
-        if (title.equals("") && description.equals("")) {
-            Toast.makeText(getApplicationContext(), "You left both fields blank. (Title/Description)", Toast.LENGTH_SHORT).show();
-        }
-        else if(title.equals("")){
-            Toast.makeText(getApplicationContext(), "You left a field blank. (Title)", Toast.LENGTH_SHORT).show();
-        }
-        else if(description.equals("")){
-            Toast.makeText(getApplicationContext(), "You left a field blank. (Description)", Toast.LENGTH_SHORT).show();
+        String time = ((EditText) findViewById(R.id.add_time_field)).getText().toString();
+        String date = ((EditText) findViewById(R.id.add_date_field)).getText().toString();
+        int flags = 0;
+        flags |= (title.equals("") ? 0 : 1);
+        flags |= (description.equals("") ? 0 : 2);
+        flags |= (time.equals("") ? 0 : 4);
+        flags |= (date.equals("") ? 0 : 8);
+        if (flags != 15) {
+            Toast.makeText(getApplicationContext(), "Please fill in all the fields.", Toast.LENGTH_SHORT).show();
         }
         else {
-            Task taskToAdd = new Task(title, description);
-            DataAccess.addTask(this, new Task(title, description));
+            // Need to set the id manually? Fuck. Shouldn't it auto-increment and auto-assign?
+            Task taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+            DataAccess.addTask(this, taskToAdd);
             Toast.makeText(getApplicationContext(), R.string.addEdit_confirm_add_toast_text, Toast.LENGTH_SHORT).show();
             Intent i = new Intent();
             this.setResult(RESULT_OK, i);
