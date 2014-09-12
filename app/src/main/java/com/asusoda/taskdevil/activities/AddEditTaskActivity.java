@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -26,11 +24,15 @@ import java.util.Calendar;
 
 public class AddEditTaskActivity extends Activity {
 
+    // Temporary workaround. Due to convention of Picker dialogs, this was the easiest solution.
+    // May have to ignore best convention if we want the best solution.
+    protected static Calendar occurs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_task);
-
+        occurs = Calendar.getInstance();
         getActionBar().setTitle(R.string.addEdit_add_action_bar_title);
     }
 
@@ -103,7 +105,10 @@ public class AddEditTaskActivity extends Activity {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            Toast.makeText(getActivity(), "NYI", Toast.LENGTH_SHORT).show();
+            occurs.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            occurs.set(Calendar.MINUTE, minute);
+            EditText editText = (EditText) getActivity().findViewById(R.id.add_time_field);
+            editText.setText(DateFormat.format("hh:mm a", occurs));
         }
 
     }
@@ -122,7 +127,18 @@ public class AddEditTaskActivity extends Activity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            Toast.makeText(getActivity(), "NYI", Toast.LENGTH_SHORT).show();
+            occurs.set(Calendar.YEAR, year);
+            occurs.set(Calendar.MONTH, month);
+            occurs.set(Calendar.DAY_OF_MONTH, day);
+            CharSequence dateString;
+            if(occurs.get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) {
+                dateString = DateFormat.format("MM/dd/yyyy", occurs);
+            }
+            else {
+                dateString = DateFormat.format("MM/dd", occurs);
+            }
+            EditText editText = (EditText) getActivity().findViewById(R.id.add_date_field);
+            editText.setText(dateString);
         }
     }
 }
