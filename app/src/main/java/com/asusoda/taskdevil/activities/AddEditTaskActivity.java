@@ -1,17 +1,28 @@
 package com.asusoda.taskdevil.activities;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.asusoda.taskdevil.R;
 import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
+
+import java.util.Calendar;
 
 public class AddEditTaskActivity extends Activity {
 
@@ -45,14 +56,14 @@ public class AddEditTaskActivity extends Activity {
         }
     }
 
-    // TODO: Implement
     public void selectTime(View view) {
-        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+        DialogFragment fragment = new TimePickerFragment();
+        fragment.show(getFragmentManager(), "selectTime");
     }
 
-    // TODO: Implement
     public void selectDate(View view) {
-        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+        DialogFragment fragment = new DatePickerFragment();
+        fragment.show(getFragmentManager(), "selectDate");
     }
 
     // TODO: Implement
@@ -77,5 +88,41 @@ public class AddEditTaskActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Used for TimePickerDialog
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            Toast.makeText(getActivity(), "NYI", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            Toast.makeText(getActivity(), "NYI", Toast.LENGTH_SHORT).show();
+        }
     }
 }
