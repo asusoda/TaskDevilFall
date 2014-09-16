@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asusoda.taskdevil.R;
@@ -21,7 +25,7 @@ import com.asusoda.taskdevil.data_access_layer.DataAccess.TaskRetrieveOptions;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements GestureDetector.OnGestureListener{
 
     private ArrayList<Task> testingTasks;
 
@@ -48,7 +52,6 @@ public class MainActivity extends Activity {
         //giving all tasks the ability to open a context menu
         //on a long press
         registerForContextMenu(taskList);
-
 
         testingTasks = new ArrayList< Task >();
 
@@ -166,4 +169,38 @@ public class MainActivity extends Activity {
         }
     }
 
+
+
+    //start gesture recognizers
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
 }

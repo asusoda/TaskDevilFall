@@ -53,57 +53,9 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
 
 
 
-        //Start GestureDetector setup for detecting swipe.
-
-        //pass the currentTask (in case the task is swiped and needs to be deleted), and the view
-        //to the gesture detector
-        final GestureDetector gestureDetector = new GestureDetector(firstLine.getContext(), new GestureListener(rowData, rowView));
-        View.OnTouchListener touchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                gestureDetector.onTouchEvent(motionEvent);
-                return true;
-            }
-        };
-
-        rowView.setOnTouchListener(touchListener);
-        //end GestureDetector setup
 
         return rowView;
     }
 
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener implements GestureDetector.OnGestureListener{
-        private View rowViewReference;
-        private Task pressedTaskReference;
 
-        public GestureListener(Task pressedTask, View rowView){
-            this.rowViewReference = rowView;
-            this.pressedTaskReference = pressedTask;
-        }
-
-        @Override
-        public boolean onDown(MotionEvent e){
-            return true;
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY){
-            //get the references to the title and description fields
-            TextView titleFieldReference = ((TextView)this.rowViewReference.findViewById(R.id.firstline));
-            TextView descriptionFieldReference = ((TextView)this.rowViewReference.findViewById(R.id.secondline));
-
-            //bit operation to strike-through the appropriate text field
-            titleFieldReference.setPaintFlags(titleFieldReference.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-            //set the description field to an empty string if the task is being deleted.
-            descriptionFieldReference.setText("");
-
-            //delete the task that was swiped
-            DataAccess.deleteTask(getContext(), pressedTaskReference);
-
-            return true;
-        }
-
-    }
 }
