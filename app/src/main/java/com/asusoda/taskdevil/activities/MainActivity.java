@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +60,6 @@ public class MainActivity extends Activity {
         //giving all tasks the ability to open a context menu
         //on a long press
         registerForContextMenu(taskList);
-
 
         testingTasks = new ArrayList< Task >();
 
@@ -255,4 +254,38 @@ public class MainActivity extends Activity {
 
     }
 
+
+
+    //start gesture recognizers
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
 }
