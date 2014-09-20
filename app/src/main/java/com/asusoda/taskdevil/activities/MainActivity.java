@@ -316,6 +316,15 @@ public class MainActivity extends Activity {
         //register list view for context menu
         registerForContextMenu(taskList);
 
+
+        taskList.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                openContextMenu(view);
+                return false;
+            }
+        });
+
     }
 
 }
