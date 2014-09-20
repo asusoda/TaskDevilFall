@@ -9,13 +9,14 @@
     tools:context=".MainActivity">
 
 
-    <ListView
+    <de.timroes.android.listview.EnhancedListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/TaskList"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
 
 
 </RelativeLayout>
