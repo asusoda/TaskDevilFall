@@ -44,6 +44,7 @@ public class TaskListAdapter extends ArrayAdapter<Task>{
         final TextView firstLine = (TextView) rowView.findViewById(R.id.firstline);
         TextView secondLine = (TextView) rowView.findViewById(R.id.secondline);
 
+
         // Populating our data fields with... DATA.
         Task rowData = mValues.get(position);
 
