@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -57,9 +58,6 @@ public class MainActivity extends Activity {
 
 
 
-        //giving all tasks the ability to open a context menu
-        //on a long press
-        registerForContextMenu(taskList);
 
         testingTasks = new ArrayList< Task >();
 
@@ -256,36 +254,68 @@ public class MainActivity extends Activity {
 
 
 
-    //start gesture recognizers
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        return true;
+
+
+    public void setUpGestureDetection(){
+        //giving all tasks the ability to open a context menu
+        //on a long press
+
+
+
+        //credit to https://github.com/timroes/EnhancedListView/ for the EnhancedListView
+
+        //set up the delete and undo functionality
+        taskList.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+
+            @Override public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+
+                // Store the item for later undo
+                final Task item = (Task) taskAdapter.getItem(position);
+
+                // Remove the item from the adapter
+                taskAdapter.remove(taskAdapter.getItem(position));
+
+                // return an Undoable
+                return new EnhancedListView.Undoable() {
+                    // Reinsert the item to the adapter
+                    @Override public void undo() {
+                        taskAdapter.insert(item, position);
+                    }
+
+                    // Return a string for your item
+                    @Override public String getTitle() {
+                        return "Deleted '" + item.getTitle() + "'"; // Plz, use the resource system :)
+                    }
+
+                    // Delete item completely from your persistent storage
+                    @Override public void discard() {
+                        DataAccess.deleteTask(getApplicationContext(), item);
+                    }
+                };
+
+            }
+
+        });
+
+        //allow for multilevel undoing
+        taskList.setUndoStyle(EnhancedListView.UndoStyle.MULTILEVEL_POPUP);
+
+
+        //add swipe functionality
+        taskList.setShouldSwipeCallback(new EnhancedListView.OnShouldSwipeCallback() {
+            @Override
+            public boolean onShouldSwipe(EnhancedListView enhancedListView, int i) {
+                return true;
+            }
+        });
+
+
+        //enable the swipe/undo
+        taskList.enableSwipeToDismiss();
+
+        //register list view for context menu
+        registerForContextMenu(taskList);
+
     }
 
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent motionEvent) {
-        return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
-        return true;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
-        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
-
-        return true;
-    }
 }
