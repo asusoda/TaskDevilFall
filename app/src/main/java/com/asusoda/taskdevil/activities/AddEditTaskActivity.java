@@ -1,10 +1,12 @@
 package com.asusoda.taskdevil.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -24,15 +26,16 @@ import java.util.Calendar;
 
 public class AddEditTaskActivity extends Activity {
 
-    // Temporary workaround. Due to convention of Picker dialogs, this was the easiest solution.
-    // May have to ignore best convention if we want the best solution.
+    // Temporary workaround. Bad convention, but it works.
     protected static Calendar occurs;
+    protected static int recurrence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_task);
         occurs = Calendar.getInstance();
+        recurrence = -1;
         getActionBar().setTitle(R.string.addEdit_add_action_bar_title);
     }
 
@@ -41,17 +44,39 @@ public class AddEditTaskActivity extends Activity {
         String description = ((EditText) findViewById(R.id.add_description_field)).getText().toString();
         String time = ((EditText) findViewById(R.id.add_time_field)).getText().toString();
         String date = ((EditText) findViewById(R.id.add_date_field)).getText().toString();
+        String recurs = ((EditText) findViewById(R.id.add_recurrence_field)).getText().toString();
         int flags = 0;
         flags |= (title.equals("") ? 0 : 1);
         flags |= (description.equals("") ? 0 : 2);
         flags |= (time.equals("") ? 0 : 4);
         flags |= (date.equals("") ? 0 : 8);
-        if (flags != 15) {
+        flags |= (recurs.equals("") ? 0 : 16);
+        if (flags != 31) {
             Toast.makeText(getApplicationContext(), "Please fill in all the fields.", Toast.LENGTH_SHORT).show();
         }
         else {
             // Need to set the id manually? Fuck. Shouldn't it auto-increment and auto-assign?
-            Task taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+            Task taskToAdd;
+            switch(recurrence) {
+                case 0:
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    break;
+                case 1:
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 86400L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    break;
+                case 2:
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 604800L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    break;
+                case 3:
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 2592000L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    break;
+                case 4:
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 31557600L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    break;
+                default:
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    break;
+            }
             DataAccess.addTask(this, taskToAdd);
             Toast.makeText(getApplicationContext(), R.string.addEdit_confirm_add_toast_text, Toast.LENGTH_SHORT).show();
             Intent i = new Intent();
@@ -72,7 +97,8 @@ public class AddEditTaskActivity extends Activity {
 
     // TODO: Implement
     public void selectRecurrence(View view) {
-        Toast.makeText(getApplicationContext(), "NYI", Toast.LENGTH_SHORT).show();
+        DialogFragment fragment = new RecurrenceFragment();
+        fragment.show(getFragmentManager(), "selectRecurrence");
     }
 
     @Override
@@ -94,7 +120,6 @@ public class AddEditTaskActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Used for TimePickerDialog
     public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
         @Override
@@ -142,5 +167,40 @@ public class AddEditTaskActivity extends Activity {
             EditText editText = (EditText) getActivity().findViewById(R.id.add_date_field);
             editText.setText(dateString);
         }
+    }
+
+    public static class RecurrenceFragment extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            String[] items = new String[] {"Once Only", "Daily", "Weekly", "Monthly", "Yearly"};
+            builder.setTitle("Recurrence")
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            EditText editText = (EditText) getActivity().findViewById(R.id.add_recurrence_field);
+                            recurrence = which;
+                            switch(which) {
+                                case 0:
+                                    editText.setText("Once Only");
+                                    break;
+                                case 1:
+                                    editText.setText("Daily");
+                                    break;
+                                case 2:
+                                    editText.setText("Weekly");
+                                    break;
+                                case 3:
+                                    editText.setText("Monthly");
+                                    break;
+                                case 4:
+                                    editText.setText("Yearly");
+                                    break;
+                            }
+                        }
+                    });
+            return builder.create();
+        }
+
     }
 }
