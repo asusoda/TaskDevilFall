@@ -95,7 +95,6 @@ public class AddEditTaskActivity extends Activity {
         fragment.show(getFragmentManager(), "selectDate");
     }
 
-    // TODO: Implement
     public void selectRecurrence(View view) {
         DialogFragment fragment = new RecurrenceFragment();
         fragment.show(getFragmentManager(), "selectRecurrence");
