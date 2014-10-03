@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
         taskList = (EnhancedListView) findViewById(R.id.TaskList);
 
 
+
         testingTasks = new ArrayList<Task>();
 
         inflateTaskListAll();
@@ -149,7 +150,7 @@ public class MainActivity extends Activity {
 
     //Show context menu
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
         super.onCreateContextMenu(menu, v, menuInfo);
         getMenuInflater().inflate(R.menu.long_press_context, menu);
     }
@@ -249,4 +250,5 @@ public class MainActivity extends Activity {
         });
 
     }
+
 }
