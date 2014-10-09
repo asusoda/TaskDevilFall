@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Pair;
 import android.app.Notification;
@@ -50,6 +51,9 @@ public class Notifier extends Service {
         scheduleNextHour();
     }
 
+    // used in scheduleNextHour to call scheduleNextHour in an hour
+    final private Handler callThisInAnHour = new Handler();
+
     // we should get the next hour from this second forward.
     // then the next time we get tasks will be in 59 minutes
     // at 59 minutes we will get the next hour and cut out the tasks that already exist
@@ -90,6 +94,11 @@ public class Notifier extends Service {
                 mPI = null;
             }
         }
+
+        callThisInAnHour.postDelayed(new Runnable() {
+            @Override
+            public void run() { scheduleNextHour(); }
+        }, 3540*1000L); // this is an hour - 1 minute
     }
 
     @Override
