@@ -4,14 +4,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.asusoda.taskdevil.R;
 import com.asusoda.taskdevil.models.Task;
@@ -21,13 +29,15 @@ import com.asusoda.taskdevil.data_access_layer.DataAccess.TaskRetrieveOptions;
 
 import java.util.ArrayList;
 
+import de.timroes.android.listview.EnhancedListView;
+
 public class MainActivity extends Activity {
 
     private ArrayList<Task> testingTasks;
 
     private TaskListAdapter taskAdapter;
 
-    private ListView taskList;
+    private EnhancedListView taskList;
 
     public void inflateTaskListAll() {
         TaskRetrieveOptions options = new TaskRetrieveOptions();
@@ -37,22 +47,22 @@ public class MainActivity extends Activity {
 
         taskAdapter = new TaskListAdapter(this, testingTasks);
         taskList.setAdapter(taskAdapter);
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        taskList = (ListView)findViewById(R.id.TaskList);
-
-        //giving all tasks the ability to open a context menu
-        //on a long press
-        registerForContextMenu(taskList);
+        taskList = (EnhancedListView) findViewById(R.id.TaskList);
 
 
-        testingTasks = new ArrayList< Task >();
+
+        testingTasks = new ArrayList<Task>();
 
         inflateTaskListAll();
+
+        setUpGestureDetection();
     }
 
 
@@ -64,7 +74,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ActivityCodes activityCode = ActivityCodes.values()[requestCode];
 
         switch (activityCode) {
@@ -91,7 +101,7 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_add:
                 Intent addIntent = new Intent(this, AddEditTaskActivity.class);
                 addIntent.putExtra(Intent.ACTION_INSERT, true);
@@ -114,7 +124,7 @@ public class MainActivity extends Activity {
                 startActivity(settingsIntent);
                 break;
             case R.id.action_about:
-               AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
+                AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
 
                 //title string needs in-code composition
                 String title = String.format(getString(R.string.main_about_title), getString(R.string.semantic_version));
@@ -123,10 +133,10 @@ public class MainActivity extends Activity {
                 aboutBuilder.setMessage(R.string.main_about_message);
 
                 aboutBuilder.setPositiveButton(R.string.main_about_positiveButton, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id){
+                    public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    });
+                    }
+                });
 
                 AlertDialog aboutDialog = aboutBuilder.create();
                 aboutDialog.show();
@@ -164,6 +174,81 @@ public class MainActivity extends Activity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+
+    public void setUpGestureDetection() {
+        //giving all tasks the ability to open a context menu
+        //on a long press
+
+
+        //credit to https://github.com/timroes/EnhancedListView/ for the EnhancedListView
+
+        //set up the delete and undo functionality
+        taskList.setDismissCallback(new EnhancedListView.OnDismissCallback() {
+
+            @Override
+            public EnhancedListView.Undoable onDismiss(EnhancedListView listView, final int position) {
+
+                // Store the item for later undo
+                final Task item = (Task) taskAdapter.getItem(position);
+
+                // Remove the item from the adapter
+                taskAdapter.remove(taskAdapter.getItem(position));
+
+                // return an Undoable
+                return new EnhancedListView.Undoable() {
+                    // Reinsert the item to the adapter
+                    @Override
+                    public void undo() {
+                        taskAdapter.insert(item, position);
+                    }
+
+                    // Return a string for your item
+                    @Override
+                    public String getTitle() {
+                        return "Deleted '" + item.getTitle() + "'"; // Plz, use the resource system :)
+                    }
+
+                    // Delete item completely from your persistent storage
+                    @Override
+                    public void discard() {
+                        DataAccess.deleteTask(getApplicationContext(), item);
+                    }
+                };
+
+            }
+
+        });
+
+        //allow for multilevel undoing
+        taskList.setUndoStyle(EnhancedListView.UndoStyle.MULTILEVEL_POPUP);
+
+
+        //add swipe functionality
+        taskList.setShouldSwipeCallback(new EnhancedListView.OnShouldSwipeCallback() {
+            @Override
+            public boolean onShouldSwipe(EnhancedListView enhancedListView, int i) {
+                return true;
+            }
+        });
+
+
+        //enable the swipe/undo
+        taskList.enableSwipeToDismiss();
+
+        //register list view for context menu
+        registerForContextMenu(taskList);
+
+
+        taskList.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                openContextMenu(view);
+                return false;
+            }
+        });
+
     }
 
 }
