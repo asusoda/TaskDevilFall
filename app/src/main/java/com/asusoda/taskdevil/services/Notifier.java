@@ -34,7 +34,7 @@ public class Notifier extends Service {
     PendingIntent mPI;
 
     public class LocalBinder extends Binder {
-        Notifier getService() { return Notifier.this; }
+        public Notifier getService() { return Notifier.this; }
     }
 
     private final IBinder mBinder = new LocalBinder();
@@ -42,7 +42,7 @@ public class Notifier extends Service {
     // if bound service is just now being created
     @Override
     public void onCreate() {
-        Toast.makeText(this, "Service is apparently starting", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Service is apparently starting", Toast.LENGTH_LONG).show();
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mAM = (AlarmManager)getSystemService(ALARM_SERVICE);
 
@@ -56,7 +56,7 @@ public class Notifier extends Service {
     public void scheduleNextHour() {
         // set options for next hour retrieval
         DataAccess.TaskRetrieveOptions options  = new DataAccess.TaskRetrieveOptions();
-        options.nextHour = true;
+        options.nextHour = new Boolean(true);
         // this returns the next hour of tasks
         ArrayList<Task> taskList = DataAccess.getTasks(this, options);
 
@@ -71,6 +71,7 @@ public class Notifier extends Service {
             while (mNotifications.containsKey(tempKey)) {
                 taskList.remove(0);
                 temp.put(tempKey, mNotifications.get(tempKey));
+                tempKey = new Pair<Integer, Long>( taskList.get(0).getId(), taskList.get(0).getNotificationAt());
             }
 
             mNotifications = temp;
@@ -78,11 +79,11 @@ public class Notifier extends Service {
             while (!taskList.isEmpty()) {
                 // create pending intents for tasks
                 Task t = taskList.remove(0);
-                long timeAt = t.getNotificationAt();
+                long timeAt = t.getNotificationAt() * 1000L;
                 mAM.set(AlarmManager.RTC_WAKEUP, timeAt, mPI);
                 Intent i = new Intent(this, NotificationReceiver.class);
                 i.putExtra("title", t.getTitle());
-                i.putExtra("occursAt", t.getOccursAt());
+                i.putExtra("description", t.getDescription());
                 mPI = PendingIntent.getBroadcast(this, 0, i, 0);
                 mAM.set(AlarmManager.RTC_WAKEUP, timeAt, mPI);
                 mNotifications.put(new Pair<Integer, Long>(t.getId(), timeAt), mPI);

@@ -28,8 +28,18 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-        <receiver android:process=":remote" android:name=".receivers.NotificationReceiver"></receiver>
-        <service android:isolatedProcess="true" android:name=".services.Notifier"></service>
+        <receiver android:name=".receivers.NotificationReceiver"></receiver>
+        <service android:name=".services.Notifier"></service>
+        <receiver
+            android:enabled="true"
+            android:name=".receivers.BootUpReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

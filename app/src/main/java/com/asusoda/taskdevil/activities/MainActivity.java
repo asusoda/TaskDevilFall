@@ -2,12 +2,16 @@ package com.asusoda.taskdevil.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.GestureDetector;
@@ -26,6 +30,8 @@ import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.adapters.TaskListAdapter;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
 import com.asusoda.taskdevil.data_access_layer.DataAccess.TaskRetrieveOptions;
+import com.asusoda.taskdevil.receivers.NotificationReceiver;
+import com.asusoda.taskdevil.services.Notifier;
 
 import java.util.ArrayList;
 
@@ -38,6 +44,27 @@ public class MainActivity extends Activity {
     private TaskListAdapter taskAdapter;
 
     private EnhancedListView taskList;
+
+    private Notifier mService;
+
+    private boolean mBound;
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        // Called when the connection with the service is established
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // Because we have bound to an explicit
+            // service that is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            Notifier.LocalBinder binder = (Notifier.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        // Called when the connection with the service disconnects unexpectedly
+        public void onServiceDisconnected(ComponentName className) {
+            mBound = false;
+        }
+    };
 
     public void inflateTaskListAll() {
         TaskRetrieveOptions options = new TaskRetrieveOptions();
@@ -56,9 +83,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         taskList = (EnhancedListView) findViewById(R.id.TaskList);
 
-
-
         testingTasks = new ArrayList<Task>();
+
+        Intent intent = new Intent(this, Notifier.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        //Toast.makeText(this, "Service is apparently starting " + mBound, Toast.LENGTH_LONG).show();
 
         inflateTaskListAll();
 

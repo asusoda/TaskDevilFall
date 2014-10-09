@@ -25,7 +25,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         // The PendingIntent to launch our activity if the user selects this notification
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
         // Set the info for the views that show in the notification panel.
-        notification.setLatestEventInfo(context, "Task Devil", "This is a Test Alarm", contentIntent);
+        notification.setLatestEventInfo(context, intent.getStringExtra("title"), intent.getStringExtra("description"), contentIntent);
         // Send the notification.
         // We use a layout id because it is a unique number. We use it later to cancel.
         mNM.notify(R.string.alarm_service_label, notification);

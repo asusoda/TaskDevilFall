@@ -16,6 +16,6 @@
             );
     </string>
     <string name="sql_retrieve_task_by_time">
-        SELECT * FROM Tasks WHERE NotificationAt => {0} AND {1} > NotificationAt ORDER BY NotificationAt ASC
+        SELECT * FROM Tasks WHERE NotificationAt > {0} AND NotificationAt &lt;= {1} ORDER BY NotificationAt ASC
     </string>
 </resources>
