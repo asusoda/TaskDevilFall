@@ -28,6 +28,8 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <receiver android:process=":remote" android:name=".receivers.NotificationReceiver"></receiver>
+        <service android:isolatedProcess="true" android:name=".services.Notifier"></service>
     </application>
 
 </manifest>

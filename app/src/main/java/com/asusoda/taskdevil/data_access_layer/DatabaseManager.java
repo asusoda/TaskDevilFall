@@ -51,6 +51,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return rows;
     }
 
+    // [start, end)
+    public Cursor retrieveTasksByTimeWindow(long start, long end) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getTasksByTimeProcedure = mContext.getString(R.string.sql_retrieve_task_by_time);
+
+        getTasksByTimeProcedure = getTasksByTimeProcedure.replace("{0}", Long.toString(start));
+        getTasksByTimeProcedure = getTasksByTimeProcedure.replace("{1}", Long.toString(end));
+
+        Cursor rows = db.rawQuery(getTasksByTimeProcedure, null);
+        return rows;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // these are the procedures for creating the database from scratch

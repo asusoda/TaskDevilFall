@@ -2,7 +2,7 @@
 <resources>
     <string name="sql_get_all_tasks">SELECT * FROM Tasks</string>
     <string name="sql_insert_task">INSERT INTO Tasks (Title, Description, RecurrenceType, RecurrenceValue, ReminderAdvanceTime, OccursAt, NotificationAt) values (\'{0}\', \'{1}\', \'{2}\', \'{3}\', \'{4}\', \'{5}\', \'{6}\');</string>
-        <string name="sql_create_database">
+    <string name="sql_create_database">
         CREATE TABLE IF NOT EXISTS
             Tasks (
                 ID integer PRIMARY KEY autoincrement,
@@ -14,5 +14,8 @@
                 OccursAt integer,
                 NotificationAt integer
             );
+    </string>
+    <string name="sql_retrieve_task_by_time">
+        SELECT * FROM Tasks WHERE NotificationAt => {0} AND {1} > NotificationAt ORDER BY NotificationAt ASC
     </string>
 </resources>
