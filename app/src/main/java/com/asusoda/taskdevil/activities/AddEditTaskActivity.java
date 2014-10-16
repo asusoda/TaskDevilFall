@@ -29,6 +29,7 @@ public class AddEditTaskActivity extends Activity {
     // Temporary workaround. Bad convention, but it works.
     protected static Calendar occurs;
     protected static int recurrence;
+    protected static Calendar reminderAt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class AddEditTaskActivity extends Activity {
         setContentView(R.layout.activity_add_edit_task);
         occurs = Calendar.getInstance();
         recurrence = -1;
+        reminderAt = Calendar.getInstance();
         getActionBar().setTitle(R.string.addEdit_add_action_bar_title);
     }
 
@@ -45,13 +47,15 @@ public class AddEditTaskActivity extends Activity {
         String time = ((EditText) findViewById(R.id.add_time_field)).getText().toString();
         String date = ((EditText) findViewById(R.id.add_date_field)).getText().toString();
         String recurs = ((EditText) findViewById(R.id.add_recurrence_field)).getText().toString();
+        String reminderTime = ((EditText) findViewById(R.id.add_reminder_time)).getText().toString();
         int flags = 0;
         flags |= (title.equals("") ? 0 : 1);
         flags |= (description.equals("") ? 0 : 2);
         flags |= (time.equals("") ? 0 : 4);
         flags |= (date.equals("") ? 0 : 8);
         flags |= (recurs.equals("") ? 0 : 16);
-        if (flags != 31) {
+        flags |= (reminderTime.equals("") ? 0 : 32);
+        if (flags != 63) {
             Toast.makeText(getApplicationContext(), "Please fill in all the fields.", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -59,22 +63,22 @@ public class AddEditTaskActivity extends Activity {
             Task taskToAdd;
             switch(recurrence) {
                 case 0:
-                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, reminderAt.getTimeInMillis() / 1000L);
                     break;
                 case 1:
-                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 86400L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 86400L, 0, occurs.getTimeInMillis() / 1000L, reminderAt.getTimeInMillis() / 1000L);
                     break;
                 case 2:
-                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 604800L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 604800L, 0, occurs.getTimeInMillis() / 1000L, reminderAt.getTimeInMillis() / 1000L);
                     break;
                 case 3:
-                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 2592000L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 2592000L, 0, occurs.getTimeInMillis() / 1000L, reminderAt.getTimeInMillis() / 1000L);
                     break;
                 case 4:
-                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 31557600L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.PERIODIC, 31557600L, 0, occurs.getTimeInMillis() / 1000L, reminderAt.getTimeInMillis() / 1000L);
                     break;
                 default:
-                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, 0L);
+                    taskToAdd = new Task(0, title, description, Task.RecurrenceTypes.ONLY_ONCE, 0L, 0, occurs.getTimeInMillis() / 1000L, reminderAt.getTimeInMillis() / 1000L);
                     break;
             }
             DataAccess.addTask(this, taskToAdd);
@@ -85,9 +89,9 @@ public class AddEditTaskActivity extends Activity {
         }
     }
 
-    public void selectTime(View view) {
-        DialogFragment fragment = new TimePickerFragment();
-        fragment.show(getFragmentManager(), "selectTime");
+    public void selectOccurrenceTime(View view) {
+        DialogFragment fragment = new OccursTimePickerFragment();
+        fragment.show(getFragmentManager(), "selectOccurrenceTime");
     }
 
     public void selectDate(View view) {
@@ -98,6 +102,11 @@ public class AddEditTaskActivity extends Activity {
     public void selectRecurrence(View view) {
         DialogFragment fragment = new RecurrenceFragment();
         fragment.show(getFragmentManager(), "selectRecurrence");
+    }
+
+    public void selectReminderTime(View view) {
+        DialogFragment fragment = new ReminderTimePickerFragment();
+        fragment.show(getFragmentManager(), "selectReminderTime");
     }
 
     @Override
@@ -119,7 +128,7 @@ public class AddEditTaskActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+    public static class OccursTimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -156,6 +165,9 @@ public class AddEditTaskActivity extends Activity {
             occurs.set(Calendar.YEAR, year);
             occurs.set(Calendar.MONTH, month);
             occurs.set(Calendar.DAY_OF_MONTH, day);
+            reminderAt.set(Calendar.YEAR, year);
+            reminderAt.set(Calendar.MONTH, month);
+            reminderAt.set(Calendar.DAY_OF_MONTH, day);
             CharSequence dateString;
             if(occurs.get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) {
                 dateString = DateFormat.format("MM/dd/yyyy", occurs);
@@ -199,6 +211,26 @@ public class AddEditTaskActivity extends Activity {
                         }
                     });
             return builder.create();
+        }
+
+    }
+
+    public static class ReminderTimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            reminderAt.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            reminderAt.set(Calendar.MINUTE, minute);
+            EditText editText = (EditText) getActivity().findViewById(R.id.add_reminder_time);
+            editText.setText("Remind Me At: " + DateFormat.format("hh:mm a", reminderAt));
         }
 
     }

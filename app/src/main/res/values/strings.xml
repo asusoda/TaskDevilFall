@@ -12,5 +12,6 @@
     <string name="title_activity_editor">Editor</string>
     <string name="title_activity_add_edit_task">AddEditTaskActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="addEdit_reminder_field_hint">Reminder Me At: </string>
 
 </resources>
