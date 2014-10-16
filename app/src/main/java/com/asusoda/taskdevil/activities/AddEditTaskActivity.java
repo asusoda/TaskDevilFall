@@ -23,6 +23,7 @@ import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddEditTaskActivity extends Activity {
 
@@ -220,6 +221,7 @@ public class AddEditTaskActivity extends Activity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(occurs.getTimeInMillis() - 300000L);
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
