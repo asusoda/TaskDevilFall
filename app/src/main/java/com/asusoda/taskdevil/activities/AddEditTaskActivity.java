@@ -31,6 +31,7 @@ public class AddEditTaskActivity extends Activity {
     protected static int recurrence;
     protected static Calendar reminderAt;
     protected static boolean hasSetReminder;
+    protected static long interval;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class AddEditTaskActivity extends Activity {
         recurrence = -1;
         reminderAt = Calendar.getInstance();
         hasSetReminder = false;
+        interval = 300000L;
         getActionBar().setTitle(R.string.addEdit_add_action_bar_title);
     }
 
@@ -134,9 +136,8 @@ public class AddEditTaskActivity extends Activity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Calendar c = occurs;
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+            int hour = occurs.get(Calendar.HOUR_OF_DAY);
+            int minute = occurs.get(Calendar.MINUTE);
 
             return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
         }
@@ -144,7 +145,7 @@ public class AddEditTaskActivity extends Activity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             occurs.set(Calendar.HOUR_OF_DAY, hourOfDay);
             occurs.set(Calendar.MINUTE, minute);
-            reminderAt.setTimeInMillis(occurs.getTimeInMillis() - 300000L);
+            reminderAt.setTimeInMillis(occurs.getTimeInMillis() - interval);
             if (hasSetReminder) {
 
                 EditText editText = (EditText) getActivity().findViewById(R.id.add_reminder_time);
@@ -172,7 +173,7 @@ public class AddEditTaskActivity extends Activity {
             occurs.set(Calendar.YEAR, year);
             occurs.set(Calendar.MONTH, month);
             occurs.set(Calendar.DAY_OF_MONTH, day);
-            reminderAt.setTimeInMillis(occurs.getTimeInMillis() - 300000L);
+            reminderAt.setTimeInMillis(occurs.getTimeInMillis() - interval);
             CharSequence dateString;
             if(occurs.get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) {
                 dateString = DateFormat.format("MM/dd/yyyy", occurs);
@@ -234,6 +235,7 @@ public class AddEditTaskActivity extends Activity {
             hasSetReminder = true;
             reminderAt.set(Calendar.HOUR_OF_DAY, hourOfDay);
             reminderAt.set(Calendar.MINUTE, minute);
+            interval = occurs.getTimeInMillis() - reminderAt.getTimeInMillis();
             EditText editText = (EditText) getActivity().findViewById(R.id.add_reminder_time);
             editText.setText("Remind Me At: " + DateFormat.format("hh:mm a", reminderAt));
         }
