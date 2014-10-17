@@ -23,7 +23,6 @@ import com.asusoda.taskdevil.models.Task;
 import com.asusoda.taskdevil.data_access_layer.DataAccess;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class AddEditTaskActivity extends Activity {
 
@@ -31,6 +30,7 @@ public class AddEditTaskActivity extends Activity {
     protected static Calendar occurs;
     protected static int recurrence;
     protected static Calendar reminderAt;
+    protected static boolean hasSetReminder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class AddEditTaskActivity extends Activity {
         occurs = Calendar.getInstance();
         recurrence = -1;
         reminderAt = Calendar.getInstance();
+        hasSetReminder = false;
         getActionBar().setTitle(R.string.addEdit_add_action_bar_title);
     }
 
@@ -96,7 +97,7 @@ public class AddEditTaskActivity extends Activity {
     }
 
     public void selectDate(View view) {
-        DialogFragment fragment = new DatePickerFragment();
+        DialogFragment fragment = new OccursDatePickerFragment();
         fragment.show(getFragmentManager(), "selectDate");
     }
 
@@ -133,7 +134,7 @@ public class AddEditTaskActivity extends Activity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Calendar c = Calendar.getInstance();
+            Calendar c = occurs;
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
@@ -143,20 +144,25 @@ public class AddEditTaskActivity extends Activity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             occurs.set(Calendar.HOUR_OF_DAY, hourOfDay);
             occurs.set(Calendar.MINUTE, minute);
+            reminderAt.setTimeInMillis(occurs.getTimeInMillis() - 300000L);
+            if (hasSetReminder) {
+
+                EditText editText = (EditText) getActivity().findViewById(R.id.add_reminder_time);
+                editText.setText("Remind Me At: " + DateFormat.format("hh:mm a", reminderAt));
+            }
             EditText editText = (EditText) getActivity().findViewById(R.id.add_time_field);
             editText.setText(DateFormat.format("hh:mm a", occurs));
         }
 
     }
 
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    public static class OccursDatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            int year = occurs.get(Calendar.YEAR);
+            int month = occurs.get(Calendar.MONTH);
+            int day = occurs.get(Calendar.DAY_OF_MONTH);
 
             return new DatePickerDialog(getActivity(), this, year, month, day);
         }
@@ -166,9 +172,7 @@ public class AddEditTaskActivity extends Activity {
             occurs.set(Calendar.YEAR, year);
             occurs.set(Calendar.MONTH, month);
             occurs.set(Calendar.DAY_OF_MONTH, day);
-            reminderAt.set(Calendar.YEAR, year);
-            reminderAt.set(Calendar.MONTH, month);
-            reminderAt.set(Calendar.DAY_OF_MONTH, day);
+            reminderAt.setTimeInMillis(occurs.getTimeInMillis() - 300000L);
             CharSequence dateString;
             if(occurs.get(Calendar.YEAR) != Calendar.getInstance().get(Calendar.YEAR)) {
                 dateString = DateFormat.format("MM/dd/yyyy", occurs);
@@ -220,15 +224,14 @@ public class AddEditTaskActivity extends Activity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(occurs.getTimeInMillis() - 300000L);
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+            int hour = reminderAt.get(Calendar.HOUR_OF_DAY);
+            int minute = reminderAt.get(Calendar.MINUTE);
 
             return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hasSetReminder = true;
             reminderAt.set(Calendar.HOUR_OF_DAY, hourOfDay);
             reminderAt.set(Calendar.MINUTE, minute);
             EditText editText = (EditText) getActivity().findViewById(R.id.add_reminder_time);
